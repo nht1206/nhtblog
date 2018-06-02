@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add new post</title>
+    <% include layout/head %>
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>tinymce.init({ selector: 'textarea' });</script>
+</head>
+
+<body>
+    <div class="container">
+        <% include layout/nav %>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Add new post
+                    </h5>
+                    <% if (message.length) { %>
+                        <% message.forEach((error) => { %>
+                            <div class="alert alert-danger"><%= error.msg %></div>
+                        <% }) %>
+                    <% } %>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <form role="form" method="post" action="/admin/post/addnew">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input class="form-control" name="title" placeholder="Enter text">
+                                </div>
+                                <div class="form-group">
+                                    <label>content</label>
+                                    <textarea class="form-control" name="content" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Author</label>
+                                    <input class="form-control" name="author" placeholder="Enter text">
+                                </div>
+                                <button class="btn btn-primary" type="submit" value="submit">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+
+</html>

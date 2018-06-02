@@ -1,47 +1,78 @@
 //app.js
-var express = require('express')
-var bodyParser = require('body-parser')
-var passport = require('passport')
-var morgan = require('morgan')
-var mongoose = require('mongoose')
-var flash = require('connect-flash')
-var session = require('express-session')
-
-var port = process.env.PORT || 3000
-/**
- * configuration
+/**setup
+ * get all we need
  */
-//initialize server
-var app = express();
 
-//get database config
-var dbConfig = require('./config/dbConfig')
-//connect mongoDB
-mongoose.connect(dbConfig.url)
+let express = require('express')
+let session = require('express-session')
+let bodyParser = require('body-parser')
+let cookie = require('cookie-parser')
+let flash = require('connect-flash')
+let morgan = require('morgan')
+let passport = require('passport')
+let expressValidator = require('express-validator')
+//config port 
+let port = process.env.PORT || 3000
 
-//set engine
+//generate app server
+let app = express()
+
+//setup our express app
+
+//set view engine
+
 app.set('view engine', 'ejs')
 
-//setup middleware
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+//log every request to the console
 app.use(morgan('dev'))
-//require for passport
+//read cookie 
+app.use(cookie())
+//
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
+//
+app.use(bodyParser.json())
 
-app.use(session({ secret: 'iloveyousomuchxxxx' }))
+//config passport
+require('./app/config/passport')(passport)
+
+//setup for passport
+
+app.use(session({
+    secret: 'nht1206xxxx',
+    resave: true,
+    saveUninitialized: false,
+    cookie: false
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
-//config passport
-require('./config/passport')(passport)
-
+//setup validator
+app.use(expressValidator({
+    "msg": "The error message",
+    "param": "param.name.with.index[0]",
+    "value": "param value",
+    // Location of the param that generated this error.
+    // It's either body, query, params, cookies or headers.
+    "location": "body"
+  
+    // nestedErrors only exist when using the oneOf function
+  }))
+//set static 
+app.use('/assets', express.static(__dirname + '/public'))
 
 //require routers
-require('./routers/index')(app)
-require('./routers/loginSystemApi')(app, passport)
+require('./app/routers/home')(app)
+require('./app/routers/user')(app, passport)
+require('./app/routers/admin')(app)
 
-
-app.listen(port, function(){
-    console.log('Server listening on port: ', port)
+app.listen(port, () => {
+    console.log('Server listenig on port: ', port)
 })
+
+
+
+
+

@@ -3,10 +3,10 @@ let mysql = require('mysql')
 let connection = mysql.createConnection({
     supportBigNumbers: true,
     bigNumberStrings: true,
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'blogdb'
+    host: 'sql10.freemysqlhosting.net',
+    user: 'sql10240994',
+    password: 'YY1VZcXvMQ',
+    database: 'sql10240994'
 })
 
 connection.connect()

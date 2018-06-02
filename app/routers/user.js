@@ -45,7 +45,7 @@ let checkBody = (req, res, next) => {
     .notEmpty().withMessage('Your name is required.')
     req.checkBody('email')
     .isEmail().withMessage('Email is not valid.')
-    req.checkBody('Password')
+    req.checkBody('password')
     .isLength({ min: 5 })
     .withMessage('Password must be at least 5 chars long.')
     .matches(/\d/)
